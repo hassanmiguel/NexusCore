@@ -81,7 +81,7 @@ export default function App() {
   const [isSending, setIsSending] = useState(false);
   const [error, setError] = useState("");
   const [showSettings, setShowSettings] = useState(false);
-const [showStorageEye, setShowStorageEye] = useState(false);
+const [showStorageEye, setShowStorageEye] = useState(true);
   const [keyStatus, setKeyStatus] = useState("unknown");
   const [hasLoaded, setHasLoaded] = useState(false);
   const [search, setSearch] = useState("");
