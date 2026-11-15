@@ -5,3 +5,4 @@ tmp_*.js
 .DS_Store
 Thumbs.db
 app/renderer/bundle.js
+tmp_asar/
