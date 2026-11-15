@@ -47,6 +47,7 @@ export default function ControlCenter({ wormgpt, onStatus }) {
   const [memorySearch, setMemorySearch] = useState("");
   const [memoryResults, setMemoryResults] = useState([]);
   const [knowledgeStats, setKnowledgeStats] = useState(null);
+  const [learnedStorage, setLearnedStorage] = useState({ skills: 0, docs: 0, chunks: 0, memories: 0 });
   const [knowledgeSearch, setKnowledgeSearch] = useState("");
   const [knowledgeResults, setKnowledgeResults] = useState([]);
   const [models, setModels] = useState(null);
@@ -77,14 +78,15 @@ export default function ControlCenter({ wormgpt, onStatus }) {
 
   async function refreshAll() {
     try {
-      const [statusRes, hard, modeRes, memRes, kbRes, modelsRes, recRes] = await Promise.all([
+      const [statusRes, hard, modeRes, memRes, kbRes, modelsRes, recRes, skillRes] = await Promise.all([
         wormgpt?.systemStatus?.(),
         wormgpt?.systemHardware?.(),
         wormgpt?.modesLoad?.(),
         wormgpt?.memoryStats?.(),
         wormgpt?.knowledgeStats?.(),
         wormgpt?.modelsList?.(),
-        wormgpt?.modelsRecommend?.()
+        wormgpt?.modelsRecommend?.(),
+        wormgpt?.skillStats?.()
       ]);
       safeSet(setStatus, statusRes || null);
       safeSet(setHardware, hard || null);
@@ -93,6 +95,12 @@ export default function ControlCenter({ wormgpt, onStatus }) {
       safeSet(setKnowledgeStats, kbRes || null);
       safeSet(setModels, modelsRes || null);
       safeSet(setRecommend, recRes || null);
+      safeSet(setLearnedStorage, {
+        skills: (skillRes && skillRes.total) || 0,
+        docs: (kbRes && kbRes.docCount) || 0,
+        chunks: (kbRes && kbRes.chunkCount) || 0,
+        memories: (memRes && memRes.total) || 0
+      });
     } catch (err) {
       setMessage("Control center failed to load: " + ((err && err.message) || err));
     }
@@ -272,6 +280,43 @@ export default function ControlCenter({ wormgpt, onStatus }) {
           </div>
         </div>
       )}
+
+      {tab === "status" && (() => {
+        const s = learnedStorage || { skills: 0, docs: 0, chunks: 0, memories: 0 };
+        const total = (s.skills || 0) + (s.docs || 0) + (s.chunks || 0) + (s.memories || 0);
+        const cap = 100000;
+        const pct = Math.min(100, Math.round((total / cap) * 100));
+        return (
+          <div className="control-center__body" style={{ marginTop: 12 }}>
+            <div className="control-center__card" style={{ background: "linear-gradient(135deg, rgba(255,77,109,0.08), rgba(124,92,255,0.08))", border: "1px solid rgba(255,255,255,0.08)" }}>
+              <div className="skills-panel__card-title">Learned Storage</div>
+              <div className="control-center__kv" style={{ marginBottom: 8 }}>
+                Skills: {s.skills} · Docs: {s.docs} · Chunks: {s.chunks} · Memories: {s.memories}
+              </div>
+              <div style={{ position: "relative", height: 18, borderRadius: 999, background: "rgba(255,255,255,0.06)", overflow: "hidden", boxShadow: "inset 0 0 8px rgba(0,0,0,0.4)" }}>
+                <div style={{
+                  position: "absolute", left: 0, top: 0, bottom: 0, width: `${pct}%`,
+                  background: "linear-gradient(90deg, #ff4d6d, #7c5cff, #00d4ff)",
+                  boxShadow: "0 0 18px rgba(124,92,255,0.6)",
+                  transition: "width 0.8s cubic-bezier(.2,.8,.2,1)",
+                  borderRadius: 999
+                }} />
+                <div style={{
+                  position: "absolute", left: 0, top: 0, bottom: 0, width: `${pct}%`,
+                  background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent)",
+                  animation: "kg-shimmer 2.4s linear infinite",
+                  borderRadius: 999
+                }} />
+              </div>
+              <div className="control-center__kv" style={{ marginTop: 8, display: "flex", justifyContent: "space-between" }}>
+                <span><strong>{total.toLocaleString()}</strong> learned units</span>
+                <span>{pct}% of {cap.toLocaleString()} capacity</span>
+              </div>
+            </div>
+            <style>{`@keyframes kg-shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }`}</style>
+          </div>
+        );
+      })()}
 
       {tab === "models" && (
         <div className="control-center__body">
