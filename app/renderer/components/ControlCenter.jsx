@@ -2,13 +2,14 @@ import { useEffect, useRef, useState } from "react";
 
 import KnowledgeGraph from "./KnowledgeGraph.jsx";
 
-const TABS = ["status", "models", "memory", "knowledge", "graph", "research", "agents", "learning", "decensor"];
+const TABS = ["status", "models", "memory", "knowledge", "graph", "storageEye", "research", "agents", "learning", "decensor"];
 const TAB_LABELS = {
   status: "Overview",
   models: "Models",
   memory: "Memory",
   knowledge: "Knowledge",
   graph: "Graph",
+  storageEye: "Storage Eye",
   research: "Research",
   agents: "Agents",
   learning: "Learning",
@@ -411,6 +412,32 @@ export default function ControlCenter({ wormgpt, onStatus }) {
           <KnowledgeGraph wormgpt={wormgpt} />
         </div>
       )}
+
+      {tab === "storageEye" && (() => {
+        const s = learnedStorage || { skills: 0, docs: 0, chunks: 0, memories: 0 };
+        const total = (s.skills || 0) + (s.docs || 0) + (s.chunks || 0) + (s.memories || 0);
+        const cap = 100000;
+        const pct = Math.min(100, Math.round((total / cap) * 100));
+        return (
+          <div className="control-center__body">
+            <div className="control-center__card" style={{ background: "linear-gradient(135deg, rgba(255,77,109,0.1), rgba(124,92,255,0.1))", border: "1px solid rgba(255,255,255,0.1)" }}>
+              <div className="skills-panel__card-title">Storage Eye</div>
+              <div className="control-center__kv" style={{ marginBottom: 8 }}>
+                Skills: {s.skills} · Docs: {s.docs} · Chunks: {s.chunks} · Memories: {s.memories}
+              </div>
+              <div style={{ position: "relative", height: 20, borderRadius: 999, background: "rgba(255,255,255,0.06)", overflow: "hidden" }}>
+                <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: `${pct}%`, background: "linear-gradient(90deg, #ff4d6d, #7c5cff, #00d4ff)", boxShadow: "0 0 18px rgba(124,92,255,0.6)", transition: "width 0.8s", borderRadius: 999 }} />
+                <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: `${pct}%`, background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent)", animation: "kg-shimmer 2.4s linear infinite", borderRadius: 999 }} />
+              </div>
+              <div className="control-center__kv" style={{ marginTop: 8, display: "flex", justifyContent: "space-between" }}>
+                <span><strong>{total.toLocaleString()}</strong> learned units</span>
+                <span>{pct}% of {cap.toLocaleString()} capacity</span>
+              </div>
+            </div>
+            <KnowledgeGraph wormgpt={wormgpt} />
+          </div>
+        );
+      })()}
 
       {tab === "research" && (
         <div className="control-center__body">

@@ -20,8 +20,8 @@ export default function Sidebar({
   onImport,
   showSettings,
   onToggleSettings,
-  showOverview,
-  onToggleOverview,
+  showStorageEye,
+  onToggleStorageEye,
   keyStatus,
   onKeySaved,
   systemPrompt,
@@ -124,8 +124,8 @@ export default function Sidebar({
         <button type="button" className="ghost" onClick={onToggleSettings}>
           {showSettings ? "Hide Settings" : "Settings"}
         </button>
-        <button type="button" className="ghost" onClick={onToggleOverview}>
-          {showOverview ? "Hide Overview" : "Overview"}
+        <button type="button" className="ghost" onClick={onToggleStorageEye}>
+          {showStorageEye ? "Hide Storage Eye" : "Storage Eye"}
         </button>
         <button type="button" className="ghost" onClick={() => setShowAgent(value => !value)}>
           {showAgent ? "Hide Agent" : "Agent Controls"}

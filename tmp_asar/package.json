@@ -1,0 +1,17 @@
+{
+  "name": "nexuscore",
+  "version": "0.2.0-alpha",
+  "description": "NexusCore unified AI intelligence platform built with Electron and React.",
+  "author": "Lahiru Sanjika (Cyber Security Researcher)",
+  "main": "app/main/main.js",
+  "dependencies": {
+    "electron-store": "^11.0.2",
+    "node-fetch": "^3.3.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "sqlite3": "^6.0.1"
+  },
+  "overrides": {
+    "tar": "^7.5.3"
+  }
+}

@@ -81,7 +81,7 @@ export default function App() {
   const [isSending, setIsSending] = useState(false);
   const [error, setError] = useState("");
   const [showSettings, setShowSettings] = useState(false);
-const [showOverview, setShowOverview] = useState(false);
+const [showStorageEye, setShowStorageEye] = useState(false);
   const [keyStatus, setKeyStatus] = useState("unknown");
   const [hasLoaded, setHasLoaded] = useState(false);
   const [search, setSearch] = useState("");
@@ -691,8 +691,8 @@ const [showOverview, setShowOverview] = useState(false);
           onImport={handleImport}
           showSettings={showSettings}
           onToggleSettings={() => setShowSettings(show => !show)}
-          showOverview={showOverview}
-          onToggleOverview={() => setShowOverview(show => !show)}
+          showStorageEye={showStorageEye}
+          onToggleStorageEye={() => setShowStorageEye(show => !show)}
           keyStatus={keyStatus}
           onKeySaved={refreshProviderInfo}
           systemPrompt={systemPrompt}
@@ -733,13 +733,16 @@ const [showOverview, setShowOverview] = useState(false);
           totalTokens={totalTokens}
         />
         <KeyboardShortcutsHelp isOpen={showShortcutsHelp} onClose={() => setShowShortcutsHelp(false)} />
-        {showOverview && (
-          <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }} onClick={() => setShowOverview(false)}>
+        {showStorageEye && (
+          <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }} onClick={() => setShowStorageEye(false)}>
             <div style={{ width: "min(1100px, 95vw)", maxHeight: "90vh", overflow: "auto", background: "#0b0510", borderRadius: 16, border: "1px solid rgba(255,255,255,0.1)", padding: 16 }} onClick={e => e.stopPropagation()}>
               <ControlCenter wormgpt={window.wormgpt} onStatus={() => {}} />
             </div>
           </div>
         )}
+        <button type="button" onClick={() => setShowStorageEye(v => !v)} style={{ position: "fixed", right: 20, bottom: 20, zIndex: 999, padding: "12px 16px", borderRadius: 999, border: "none", background: "linear-gradient(135deg,#ff4d6d,#7c5cff)", color: "#fff", fontWeight: 700, cursor: "pointer", boxShadow: "0 8px 24px rgba(124,92,255,0.5)" }}>
+          {showStorageEye ? "Close Storage Eye" : "👁 Storage Eye"}
+        </button>
       </div>
     </div>
   );
