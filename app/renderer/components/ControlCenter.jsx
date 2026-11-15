@@ -269,8 +269,8 @@ export default function ControlCenter({ wormgpt, onStatus }) {
                   {recommend.models && recommend.models.length > 0 && (
                     <div className="control-center__install">
                       {recommend.models.slice(0, 4).map(model => (
-                        <button key={model} type="button" className="ghost" onClick={() => handleInstall(model)}>
-                          Install {model}
+                        <button key={model.name} type="button" className="ghost" onClick={() => handleInstall(model.name)}>
+                          Install {model.name}
                         </button>
                       ))}
                     </div>
