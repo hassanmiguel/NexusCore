@@ -1,0 +1,30 @@
+{
+  "name": "nexuscore",
+  "version": "0.2.0-alpha",
+  "description": "NexusCore unified AI intelligence platform built with Electron and React.",
+  "author": "Lahiru Sanjika (Cyber Security Researcher)",
+  "main": "app/main/main.js",
+  "scripts": {
+    "build:renderer": "esbuild app/renderer/main.jsx --bundle --minify --legal-comments=none --outfile=app/renderer/bundle.js --platform=browser --format=esm --jsx=automatic --loader:.jsx=jsx && npm run obfuscate:renderer",
+    "obfuscate:renderer": "node scripts/obfuscate-renderer.js",
+    "test": "node --test tests/*.test.js",
+    "start": "npm run build:renderer && electron .",
+    "dist": "set CSC_IDENTITY_AUTO_DISCOVERY=false&& npm run build:renderer && electron-builder"
+  },
+  "dependencies": {
+    "electron-store": "^11.0.2",
+    "node-fetch": "^3.3.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "sqlite3": "^6.0.1"
+  },
+  "devDependencies": {
+    "electron": "^40.0.0",
+    "electron-builder": "^26.4.0",
+    "esbuild": "^0.27.2",
+    "javascript-obfuscator": "^5.1.0"
+  },
+  "overrides": {
+    "tar": "^7.5.3"
+  }
+}
