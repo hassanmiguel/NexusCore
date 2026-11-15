@@ -4,7 +4,7 @@ import KnowledgeGraph from "./KnowledgeGraph.jsx";
 
 const TABS = ["status", "models", "memory", "knowledge", "graph", "research", "agents", "learning", "decensor"];
 const TAB_LABELS = {
-  status: "Status",
+  status: "Overview",
   models: "Models",
   memory: "Memory",
   knowledge: "Knowledge",

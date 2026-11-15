@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import TitleBar from "./components/TitleBar.jsx";
+import ControlCenter from "./components/ControlCenter.jsx";
 import Sidebar from "./components/Sidebar.jsx";
 import Chat from "./components/Chat.jsx";
 import ModelSelector from "./components/ModelSelector.jsx";
@@ -80,6 +81,7 @@ export default function App() {
   const [isSending, setIsSending] = useState(false);
   const [error, setError] = useState("");
   const [showSettings, setShowSettings] = useState(false);
+const [showOverview, setShowOverview] = useState(false);
   const [keyStatus, setKeyStatus] = useState("unknown");
   const [hasLoaded, setHasLoaded] = useState(false);
   const [search, setSearch] = useState("");
@@ -689,6 +691,8 @@ export default function App() {
           onImport={handleImport}
           showSettings={showSettings}
           onToggleSettings={() => setShowSettings(show => !show)}
+          showOverview={showOverview}
+          onToggleOverview={() => setShowOverview(show => !show)}
           keyStatus={keyStatus}
           onKeySaved={refreshProviderInfo}
           systemPrompt={systemPrompt}
@@ -729,6 +733,13 @@ export default function App() {
           totalTokens={totalTokens}
         />
         <KeyboardShortcutsHelp isOpen={showShortcutsHelp} onClose={() => setShowShortcutsHelp(false)} />
+        {showOverview && (
+          <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.6)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: 24 }} onClick={() => setShowOverview(false)}>
+            <div style={{ width: "min(1100px, 95vw)", maxHeight: "90vh", overflow: "auto", background: "#0b0510", borderRadius: 16, border: "1px solid rgba(255,255,255,0.1)", padding: 16 }} onClick={e => e.stopPropagation()}>
+              <ControlCenter wormgpt={window.wormgpt} onStatus={() => {}} />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
